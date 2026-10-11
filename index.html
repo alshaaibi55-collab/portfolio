@@ -62,8 +62,9 @@ h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.
 
 /* NAV */
 nav.files{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-nav.files .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
-nav.files a{flex:none;text-decoration:none;font-family:var(--display);font-weight:700;font-size:14px;color:var(--muted);padding:7px 14px;border-radius:999px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+nav.files .wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 2px;max-width:1280px;padding-block:8px}
+nav.files a{flex:none;text-decoration:none;font-family:var(--display);font-weight:700;font-size:14px;color:var(--muted);padding:6px 11px;border-radius:999px;display:flex;align-items:center;gap:7px;white-space:nowrap}
+@media (max-width:700px){nav.files .wrap{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(to left,#000 88%,transparent);mask-image:linear-gradient(to left,#000 88%,transparent)}nav.files a{font-size:12.5px;padding:5px 9px;gap:5px}nav.files a i{width:19px;height:19px;font-size:11px}}
 nav.files a i{font-style:normal;font-size:12px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);color:var(--gold-ink);font-variant-numeric:tabular-nums}
 nav.files a:hover,nav.files a.on{color:var(--on-maroon);background:var(--maroon)}
 nav.files a.on i,nav.files a:hover i{background:var(--gold);color:var(--maroon-ink)}
@@ -402,7 +403,7 @@ button.ev.star svg{color:var(--maroon-ink)}
 
 <nav class="files" aria-label="أقسام الملف">
  <div class="wrap">
-  <a href="#home"><i>⌂</i>الرئيسية</a>
+  <a href="#home"><i><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg></i>الرئيسية</a>
   <a href="#cv"><i>١</i>السيرة الذاتية</a>
   <a href="#professional"><i>◆</i>المشاركات المهنية</a>
   <a href="#outcomes"><i>٢</i>نواتج التعلم</a>
