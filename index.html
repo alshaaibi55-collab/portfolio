@@ -284,9 +284,9 @@ button.ev.star svg{color:var(--maroon-ink)}
 .v-close{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--gold);background:transparent;color:var(--gold-soft);font-size:17px;cursor:pointer}
 .v-body{overflow:auto;padding:12px;background:var(--surface-2)}
 .v-pages{display:grid;gap:12px;max-width:980px;margin-inline:auto}
-.v-page{background:#fff;border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.12);display:grid;place-items:center;overflow:hidden}
-.v-page span{color:#999;font-size:13px}
-.v-page canvas{display:block}
+.v-page{position:relative;background:#fff;border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.12);overflow:hidden}
+.v-page span{position:absolute;inset:0;display:grid;place-items:center;color:#999;font-size:13px}
+.v-page img{display:block}
 .v-load{padding:60px 20px;text-align:center;color:var(--muted)}
 .v-media{display:grid;gap:18px;place-items:center;padding:30px 10px}
 .v-media video{width:100%;max-width:100%;max-height:70vh;border-radius:12px;background:#000}
@@ -679,8 +679,6 @@ button.ev.star svg{color:var(--maroon-ink)}
  </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
 <script>
 const ev = (t,label)=>`<span class="ev pending"><svg><use href="#i-${t}"/></svg>${label}</span>`;
 
@@ -709,8 +707,7 @@ document.getElementById("courses").innerHTML=COURSES.map((c,ci)=>`
    <div class="chips">${w.e.length?w.e.map((e,ei)=>`<button type="button" class="ev${e.f?' star':''}" data-c="${ci}" data-w="${wi}" data-e="${ei}"><svg><use href="#i-${ICON[e.k]}"/></svg>${e.l}</button>`).join(""):'<span class="ev pending"><svg><use href="#i-pdf"/></svg>الدليل</span>'}</div></div></li>`).join("")}</ol></article>`).join("");
 
 const vw=document.getElementById("viewer"), vb=document.getElementById("vBody");
-let pdfTask=null;
-function closeViewer(){ vw.hidden=true; document.body.style.overflow=""; vb.innerHTML=""; if(pdfTask){try{pdfTask.destroy()}catch(e){} pdfTask=null;} }
+function closeViewer(){ vw.hidden=true; document.body.style.overflow=""; vb.innerHTML=""; }
 function openEv(c,w,e){ const C=COURSES[c],W=C.w[w],E=W.e[e]; openMeta(C.ar+" ("+C.en+") · "+C.c+" · "+E.l, W.t, E); }
 async function openMeta(sub,title,E){
   document.getElementById("vCourse").textContent=sub;
@@ -721,30 +718,20 @@ async function openMeta(sub,title,E){
   if(E.k==="audio"){ vb.innerHTML=`<div class="v-media"><div class="v-wave"><svg viewBox="0 0 24 24"><use href="#i-aud"/></svg></div><audio controls preload="metadata" src="${E.s}"></audio></div>`; return; }
   if(E.k==="img"){ vb.innerHTML=`<div class="v-media"><img src="${E.s}" alt="" style="width:100%;max-width:560px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.15)"></div>`; return; }
   if(E.k==="video"){ vb.innerHTML=`<div class="v-media"><video controls playsinline preload="metadata" src="${E.s}"></video></div>`; return; }
-  vb.innerHTML=`<div class="v-load">جارٍ تحميل الملف…</div>`;
-  if(!window.pdfjsLib){ vb.innerHTML=`<div class="v-load">تعذّر تحميل عارض الملفات. استخدم زر «فتح الملف».</div>`; return; }
-  try{
-    pdfTask=pdfjsLib.getDocument({url:E.s,useSystemFonts:false,isEvalSupported:false});
-    const pdf=await pdfTask.promise; vb.innerHTML="";
-    const wrap=document.createElement("div"); wrap.className="v-pages"; vb.appendChild(wrap);
-    const width=Math.min(vb.clientWidth-24,980);
-    const io=new IntersectionObserver(ents=>ents.forEach(async en=>{
-      if(!en.isIntersecting||en.target.dataset.done) return; en.target.dataset.done=1; io.unobserve(en.target);
-      const pg=await pdf.getPage(+en.target.dataset.p); const v0=pg.getViewport({scale:1});
-      const sc=width/v0.width, dpr=Math.min(window.devicePixelRatio||1,2), vp=pg.getViewport({scale:sc*dpr});
-      const cv=document.createElement("canvas"); cv.width=vp.width; cv.height=vp.height; cv.style.width="100%";
-      en.target.innerHTML=""; en.target.appendChild(cv);
-      await pg.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
-    }),{root:vb,rootMargin:"600px 0px"});
-    for(let i=1;i<=pdf.numPages;i++){
-      const pg0=i===1?await pdf.getPage(1):null;
-      const d=document.createElement("div"); d.className="v-page"; d.dataset.p=i;
-      const r=pg0?pg0.getViewport({scale:1}):null; d.style.aspectRatio=r?`${r.width}/${r.height}`:(wrap.firstChild?wrap.firstChild.style.aspectRatio:"1/1.41");
-      d.innerHTML=`<span>${toAr(i)}</span>`; wrap.appendChild(d); io.observe(d);
-    }
-    document.getElementById("vCourse").textContent+=" · "+toAr(pdf.numPages)+" صفحة";
-  }catch(err){ vb.innerHTML=`<div class="v-load">تعذّر عرض الملف هنا. استخدم زر «فتح الملف».</div>`; }
+  const P=PAGES[E.s];
+  if(!P){ vb.innerHTML=`<div class="v-load">لعرض الملف استخدم زر «فتح الملف».</div>`; return; }
+  const base=E.s.slice(0,-4)+".p/", wrap=document.createElement("div"); wrap.className="v-pages"; vb.appendChild(wrap);
+  for(let i=1;i<=P[0];i++){
+    const d=document.createElement("div"); d.className="v-page"; d.style.aspectRatio="1/"+P[1];
+    const im=new Image(); im.alt="صفحة "+i; im.decoding="async"; if(i>2) im.loading="lazy";
+    im.style.cssText="width:100%;height:auto;display:block;position:relative;z-index:1;background:#fff";
+    im.onload=()=>{d.style.aspectRatio=im.naturalWidth+"/"+im.naturalHeight;};
+    im.src=base+i+".jpg";
+    d.innerHTML=`<span>${toAr(i)}</span>`; d.appendChild(im); wrap.appendChild(d);
+  }
+  document.getElementById("vCourse").textContent+=" · "+toAr(P[0])+" صفحة";
 }
+const PAGES={"ev/COMM/a-1.pdf":[58,0.5625],"ev/COMM/a-2.pdf":[1,1.4419],"ev/COMM/b-1.pdf":[30,0.5625],"ev/COMM/c-1.pdf":[37,0.5625],"ev/COMM/d-1.pdf":[20,0.7071],"ev/COMM/e-1.pdf":[1,0.7074],"ev/COMM/f-1.pdf":[48,1.2941],"ev/CV/cv.pdf":[5,1.4151],"ev/HRMA7302/n1-1.pdf":[23,1.2941],"ev/HRMA7302/n1-2.pdf":[31,1.2941],"ev/HRMA7302/n2-1.pdf":[20,0.5625],"ev/HRMA7302/n3-1.pdf":[20,0.5625],"ev/HRMA7302/n4-1.pdf":[20,0.5625],"ev/HRMA7302/n5-1.pdf":[22,0.5625],"ev/MANA7301/n1-1.pdf":[3,1.4142],"ev/MANA7301/n1-2.pdf":[32,0.5625],"ev/MANA7301/n2-1.pdf":[23,1.4142],"ev/MANA7301/n3-1.pdf":[12,0.7071],"ev/MANA7301/n3-2.pdf":[18,0.5625],"ev/MANA7301/n4-1.pdf":[10,0.7071],"ev/MANA7301/n5-1.pdf":[15,1.2941],"ev/MANA7301/n5-2.pdf":[25,0.5625],"ev/MANA7301/n5-3.pdf":[2,1.2941],"ev/MANA7301/n5-4.pdf":[2,1.2941],"ev/MANA7301/n5-5.pdf":[2,1.2941],"ev/MANA7301/n5-6.pdf":[8,1.4151],"ev/MANA7301/n5-7.pdf":[6,1.4151],"ev/MANA7307/1-1.pdf":[31,0.5625],"ev/MANA7307/n2-1.pdf":[22,0.5625],"ev/MANA7307/n3-1.pdf":[34,0.5625],"ev/MANA7307/n4-1.pdf":[30,0.5625],"ev/MANA7307/n5-1.pdf":[23,1.2941],"ev/MANA7307/n6-1.pdf":[30,0.5625],"ev/MANA8302/n1-1.pdf":[11,1.2941],"ev/MANA8302/n1-2.pdf":[10,1.4142],"ev/MANA8302/n2-1.pdf":[21,0.5625],"ev/MANA8302/n3-1.pdf":[7,1.2941],"ev/MANA8302/n3-2.pdf":[17,0.5625],"ev/MANA8302/n3-3.pdf":[6,1.2941],"ev/MANA8302/n4-1.pdf":[21,0.5625],"ev/MANA8302/n5-1.pdf":[21,0.5625],"ev/MANA8304/n1-1.pdf":[40,1.2941],"ev/MANA8304/n2-1.pdf":[22,0.5625],"ev/MANA8304/n3-1.pdf":[22,0.5625],"ev/PROP/approval.pdf":[1,1.4144],"ev/PROP/proposal.pdf":[10,1.4142],"ev/PROP/zakat-regulation.pdf":[7,1.4143],"ev/PUBA8302/1-2.pdf":[14,1.2941],"ev/PUBA8302/1-3.pdf":[1,1.2941],"ev/PUBA8302/4-1.pdf":[75,1.2941],"ev/PUBA8302/5-1.pdf":[24,1.2941],"ev/PUBA8302/6-1.pdf":[24,1.2941],"ev/PUBA8302/n1-1.pdf":[16,1.2941],"ev/PUBA8302/n2-1.pdf":[34,1.2941],"ev/PUBA8302/n3-1.pdf":[16,0.5625],"ev/PUBA8302/n4-2.pdf":[23,0.5625],"ev/PUBA8302/n5-2.pdf":[11,0.5625],"ev/PUBA8302/n6-2.pdf":[20,0.5625],"ev/RES/confmanage.pdf":[2,1.2941],"ev/RES/e11-cert.pdf":[1,0.7072],"ev/RES/e15-pass.pdf":[1,0.7071],"ev/RES/r1-acc.pdf":[1,1.4145],"ev/RES/r18-guide.pdf":[52,1.4142],"ev/RES/r19-zakat.pdf":[18,1.2941],"ev/RES/r2-atlantis.pdf":[1,1.4142],"ev/RES/r3-proof.pdf":[27,1.2941],"ev/RES/r3-scholarone.pdf":[2,1.2941],"ev/RES/r8-form.pdf":[4,1.4142],"ev/RES/r9-call.pdf":[2,0.6923],"ev/RES/r9-paper.pdf":[27,1.4151],"ev/RES/r9-program.pdf":[2,1.3333],"ev/RES/rb-paper.pdf":[34,1.2941],"ev/RES/rb-plan.pdf":[1,1.2941],"ev/RES/rb-slides.pdf":[11,0.5625],"ev/RES/rb-summary.pdf":[3,1.2941],"ev/RESA7402/n1-1.pdf":[21,0.5625],"ev/RESA7402/n2-1.pdf":[22,0.5625],"ev/RESA7402/n3-1.pdf":[21,0.5625],"ev/RESA7402/n4-1.pdf":[24,1.2941],"ev/RESA7402/n5-1.pdf":[21,0.5625],"ev/RESA7501/5-1.pdf":[11,1.2941],"ev/RESA7501/n1-1.pdf":[26,0.5625],"ev/RESA7501/n2-1.pdf":[23,0.5625],"ev/RESA7501/n3-1.pdf":[26,0.5625],"ev/RESA7501/n4-1.pdf":[19,1.2941],"ev/RESA7501/n5-2.pdf":[13,1.2941],"ev/RESA7501/n5-3.pdf":[1,1.2941]};
 document.getElementById("courses").addEventListener("click",ev=>{const b=ev.target.closest("button.ev"); if(b) openEv(+b.dataset.c,+b.dataset.w,+b.dataset.e);});
 document.getElementById("vClose").addEventListener("click",closeViewer);
 vw.addEventListener("click",e=>{if(e.target===vw) closeViewer();});
