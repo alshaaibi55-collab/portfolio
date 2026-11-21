@@ -163,6 +163,39 @@ td.muted{color:var(--muted)}
 .prop-blocks{display:grid;gap:10px;margin-top:14px}
 
 /* links */
+.lk-key{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 18px}
+.lk-card{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:16px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);transition:transform .15s,box-shadow .15s}
+.lk-card:hover,.lk-card:focus-visible{transform:translateY(-2px);box-shadow:0 6px 18px rgba(92,20,40,.12);outline:none}
+.lk-card b{font-family:var(--display);font-size:16px;color:var(--fg)}
+.lk-card small{font-size:12px;color:var(--muted);line-height:1.5}
+.lk-card .lk-ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--maroon);margin-bottom:6px}
+.lk-card .lk-ic svg{width:18px;height:18px;color:var(--gold);fill:currentColor}
+.lk-card.main{background:var(--maroon);border-color:var(--maroon)}
+.lk-card.main b{color:#fff}.lk-card.main small{color:#ecd9a8}.lk-card.main .lk-ic{background:var(--gold)}.lk-card.main .lk-ic svg{color:var(--maroon)}
+.lk-tools{display:flex;gap:10px;margin:18px 0 12px}
+.lk-tools input{flex:1;min-width:0;font:inherit;font-size:14px;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.lk-btn{font:inherit;font-size:13px;font-weight:700;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);cursor:pointer}
+#lkIdx{display:grid;gap:10px}
+.lk-sec{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.lk-sec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:14px 18px}
+.lk-sec>summary::-webkit-details-marker{display:none}
+.lk-sec>summary .n{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--maroon);color:var(--gold);font-weight:800}
+.lk-sec>summary h3{font-family:var(--display);font-size:17px;margin:0;flex:1}
+.lk-sec>summary .c{font-size:12px;font-weight:700;color:var(--muted);background:var(--surface-2);border-radius:999px;padding:3px 10px}
+.lk-sec>summary::after{content:"‹";font-size:22px;color:var(--gold);transition:transform .2s;transform:rotate(0deg)}
+.lk-sec[open]>summary::after{transform:rotate(-90deg)}
+.lk-body{padding:0 18px 16px;border-top:1px solid var(--line)}
+.lk-go{display:inline-block;margin:12px 0 4px;font-size:13px;font-weight:700;color:var(--gold);text-decoration:none}
+.lk-grp{margin-top:12px}
+.lk-grp h5{font-size:13px;color:var(--gold);margin:0 0 6px;font-weight:800}
+.lk-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)}
+.lk-row:last-child{border-bottom:0}
+.lk-row .t{font-size:14px;line-height:1.6;color:var(--fg)}
+.lk-row .t i{font-style:normal;color:var(--muted);font-size:12px;margin-inline-start:6px}
+.lk-row .chips{margin:0;justify-content:flex-end}
+.lk-row .ev{cursor:pointer;font-family:inherit}
+.lk-empty{text-align:center;color:var(--muted);padding:20px}
+@media (max-width:760px){.lk-key{grid-template-columns:1fr 1fr}.lk-row{grid-template-columns:1fr}.lk-row .chips{justify-content:flex-start}}
 .links{display:grid;gap:12px}
 .lrow{display:grid;grid-template-columns:190px 1fr;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;align-items:start}
 .lrow h4{font-size:16px;display:flex;gap:8px;align-items:center}
@@ -648,15 +681,17 @@ button.ev.star svg{color:var(--maroon-ink)}
  <!-- 6 Links -->
  <section class="file" id="links">
   <div class="sec-head"><span class="sec-num">٦</span><div><div class="eyebrow">الصفحة الختامية</div><h2>الروابط والإثباتات</h2></div></div>
-  <p class="brief">روابط الملفات الداعمة لكل قسم في مكان واحد، ومنها رابط الأطروحة وملخصها.</p>
-  <div class="links">
-   <div class="lrow key"><h4><em>٥</em>الأطروحة</h4><div class="chips"><a class="ev" href="#proposal"><svg><use href="#i-link"/></svg>صفحة مقترح الأطروحة</a><button type="button" class="ev" id="propPdf2"><svg><use href="#i-pdf"/></svg>ملف المقترح الكامل</button><a class="ev" href="#proposal"><svg><use href="#i-pdf"/></svg>الملخص</a></div></div>
-   <div class="lrow"><h4><em>▶</em>الفيلم التعريفي</h4><div class="chips"><a class="ev" href="#film"><svg><use href="#i-vid"/></svg>من الخبرة إلى المعرفة… ومن المعرفة إلى الأثر</a></div></div>
-   <div class="lrow"><h4><em>١</em>السيرة الذاتية</h4><div class="chips"><button type="button" class="ev" id="cvPdf2"><svg><use href="#i-pdf"/></svg>السيرة الذاتية PDF</button><span class="ev pending"><svg><use href="#i-link"/></svg>مجلد الشهادات</span></div></div>
-   <div class="lrow"><h4><em>٢</em>نواتج التعلم</h4><div class="chips"><span class="ev pending"><svg><use href="#i-pdf"/></svg>ورقة نواتج التعلم</span></div></div>
-   <div class="lrow"><h4><em>٣</em>الأبحاث</h4><div class="chips"><span class="ev pending"><svg><use href="#i-link"/></svg>مجلد الأبحاث والأدلة</span></div></div>
-   <div class="lrow"><h4><em>٤</em>خدمة المجتمع</h4><div class="chips"><span class="ev pending"><svg><use href="#i-link"/></svg>مجلد الشهادات</span><span class="ev pending"><svg><use href="#i-img"/></svg>الصور</span><span class="ev pending"><svg><use href="#i-vid"/></svg>المقاطع</span></div></div>
+  <p class="brief">فهرس شامل لكل الإثباتات والملفات الداعمة في ملف الإنجاز، مرتّبة حسب الأقسام دون تكرار. اضغط على أي إثبات لعرضه مباشرة، أو استخدم البحث للوصول إليه.</p>
+  <div class="lk-key">
+   <button type="button" class="lk-card main" data-go="prop"><span class="lk-ic"><svg><use href="#i-pdf"/></svg></span><b>مقترح الأطروحة كاملًا</b><small>ملف PDF · نسخة 11 أكتوبر 2026</small></button>
+   <button type="button" class="lk-card" data-go="abs"><span class="lk-ic"><svg><use href="#i-link"/></svg></span><b>ملخص الأطروحة</b><small>الملخص في صفحة المقترح</small></button>
+   <button type="button" class="lk-card" data-go="cv"><span class="lk-ic"><svg><use href="#i-pdf"/></svg></span><b>السيرة الذاتية</b><small>ملف PDF كامل</small></button>
+   <button type="button" class="lk-card" data-go="film"><span class="lk-ic"><svg><use href="#i-vid"/></svg></span><b>الفيلم التعريفي</b><small>من الخبرة إلى المعرفة… ومن المعرفة إلى الأثر</small></button>
   </div>
+  <div class="r-stats" id="lkStats"></div>
+  <div class="lk-tools"><input type="search" id="lkQ" placeholder="ابحث في الإثباتات… (مثال: قبول، ISO، القيادة)" aria-label="بحث في الإثباتات"><button type="button" id="lkAll" class="lk-btn">فتح الكل</button></div>
+  <div id="lkIdx"></div>
+  <p class="lk-empty" id="lkNone" hidden>لا توجد نتائج مطابقة.</p>
   <div class="pager"></div>
  </section>
 </main>
@@ -707,7 +742,7 @@ document.getElementById("courses").innerHTML=COURSES.map((c,ci)=>`
    <div class="chips">${w.e.length?w.e.map((e,ei)=>`<button type="button" class="ev${e.f?' star':''}" data-c="${ci}" data-w="${wi}" data-e="${ei}"><svg><use href="#i-${ICON[e.k]}"/></svg>${e.l}</button>`).join(""):'<span class="ev pending"><svg><use href="#i-pdf"/></svg>الدليل</span>'}</div></div></li>`).join("")}</ol></article>`).join("");
 
 const vw=document.getElementById("viewer"), vb=document.getElementById("vBody");
-function closeViewer(){ vw.hidden=true; document.body.style.overflow=""; vb.innerHTML=""; }
+function closeViewer(){ vw.hidden=true; document.body.style.overflow=""; vb.querySelectorAll("video,audio").forEach(m=>{try{m.pause();m.removeAttribute("src");m.load();}catch(e){}}); vb.innerHTML=""; }
 function openEv(c,w,e){ const C=COURSES[c],W=C.w[w],E=W.e[e]; openMeta(C.ar+" ("+C.en+") · "+C.c+" · "+E.l, W.t, E); }
 async function openMeta(sub,title,E){
   document.getElementById("vCourse").textContent=sub;
@@ -746,10 +781,63 @@ document.querySelectorAll(".toc button[data-go]").forEach(b=>b.addEventListener(
 document.getElementById("propPdf2")?.addEventListener("click",()=>document.getElementById("propPdf").click());
 const openCv=()=>openMeta("السيرة الذاتية · ٥ صفحات","عمر بن راشد بن ناصر الشعيبي",{k:"pdf",s:"ev/CV/cv.pdf"});
 document.getElementById("cvPdf").addEventListener("click",openCv);
-document.getElementById("cvPdf2")?.addEventListener("click",openCv);
 document.getElementById("professional").addEventListener("click",ev=>{const b=ev.target.closest("button.ev[data-pp]"); if(!b) return; openMeta("المشاركات المهنية والعملية · "+b.textContent.trim(), b.dataset.t, {k:"img",s:b.dataset.pp});});
 document.getElementById("research").addEventListener("click",ev=>{const b=ev.target.closest("button.ev[data-s]"); if(!b) return; const card=b.closest(".card,tr"); const t=card?(card.querySelector("h4")||card.querySelector("td")).textContent:""; openMeta("الأبحاث والمؤتمرات والنشر · "+b.textContent.trim(), t, {k:b.dataset.k,s:b.dataset.s});});
 document.getElementById("proposal").addEventListener("click",ev=>{const b=ev.target.closest("button.ev[data-prop]"); if(!b) return; openMeta("مقترح الأطروحة · "+b.textContent.trim(), b.dataset.t, {k:"pdf",s:b.dataset.prop});});
+// ===== Links & evidence index (built from every evidence button on the site) =====
+(function(){
+  const kindOf=b=>{const u=b.querySelector("use"); return u?(u.getAttribute("href")||"").replace("#i-",""):"pdf";};
+  const titleIn=(b,sel)=>{const c=b.closest(sel); if(!c) return ""; const h=c.querySelector("h4")||c.querySelector("td"); return h?h.textContent.trim():"";};
+  const cnt=n=>n===1?"إثبات واحد":n===2?"إثباتان":n<=10?n+" إثباتات":n+" إثباتًا";
+  const SECS=[];
+  // 1 CV
+  SECS.push({id:"cv",n:"١",t:"السيرة الذاتية",items:[...document.querySelectorAll("#cv button.ev")].map(b=>({g:"",t:"السيرة الذاتية كاملة",b}))});
+  // professional
+  SECS.push({id:"professional",n:"◆",t:"المشاركات المهنية والعملية",items:[...document.querySelectorAll("#professional button.ev[data-pp]")].map(b=>({g:b.closest(".pp-group")?.querySelector("h3")?.textContent||"",t:b.dataset.t,d:b.closest(".pp-item")?.querySelector(".pp-when")?.textContent||"",b}))});
+  // outcomes
+  SECS.push({id:"outcomes",n:"٢",t:"نواتج التعلم",items:[...document.querySelectorAll("#courses button.ev[data-c]")].map(b=>{const C=COURSES[+b.dataset.c],W=C.w[+b.dataset.w];return {g:C.ar+" ("+C.en+") · "+C.c,t:W.t,b};})});
+  // research
+  {let cur="",it=[];document.querySelectorAll("#research .sub, #research button.ev[data-s]").forEach(el=>{ if(el.classList.contains("sub")) cur=el.textContent.trim(); else it.push({g:cur,t:titleIn(el,".card,tr"),b:el}); }); SECS.push({id:"research",n:"٣",t:"الأبحاث والمؤتمرات والنشر",items:it});}
+  // community
+  SECS.push({id:"community",n:"٤",t:"خدمة المجتمع",items:[...document.querySelectorAll("#commFeat button.ev")].map(b=>{const c=COMM[+b.dataset.i];return {g:"",t:c.t,d:c.y,b};})});
+  // proposal
+  SECS.push({id:"proposal",n:"٥",t:"مقترح الأطروحة",items:[...document.querySelectorAll("#proposal button.ev")].map(b=>({g:"",t:b.dataset.t||"مقترح الأطروحة · الملف الكامل",b}))});
+  const idx=document.getElementById("lkIdx"); let total=0,K={pdf:0,img:0,vid:0,aud:0};
+  SECS.forEach(S=>{
+    // merge buttons that share the same item title
+    const rows=[],map=new Map();
+    S.items.forEach(x=>{const key=x.g+"|"+x.t; let r=map.get(key); if(!r){r={g:x.g,t:x.t,d:x.d,bs:[]};map.set(key,r);rows.push(r);} r.bs.push(x.b); total++; const k=kindOf(x.b); K[k]=(K[k]||0)+1;});
+    const det=document.createElement("details"); det.className="lk-sec";
+    det.innerHTML=`<summary><span class="n">${S.n}</span><h3>${S.t}</h3><span class="c">${cnt(S.items.length)}</span></summary><div class="lk-body"><a class="lk-go" href="#${S.id}">الانتقال إلى صفحة القسم ←</a></div>`;
+    const body=det.querySelector(".lk-body"); let grp=null,last=null;
+    rows.forEach(r=>{
+      if(r.g!==last){ last=r.g; grp=document.createElement("div"); grp.className="lk-grp"; if(r.g) grp.innerHTML=`<h5>${r.g}</h5>`; body.appendChild(grp); }
+      const row=document.createElement("div"); row.className="lk-row"; row.dataset.q=(S.t+" "+r.g+" "+r.t+" "+r.bs.map(b=>b.textContent).join(" ")).toLowerCase();
+      row.innerHTML=`<div class="t">${r.t}${r.d?`<i>${r.d}</i>`:""}</div><div class="chips"></div>`;
+      const ch=row.querySelector(".chips");
+      r.bs.forEach(b=>{const p=document.createElement("button"); p.type="button"; p.className="ev"+(b.classList.contains("star")?" star":""); p.innerHTML=b.innerHTML; p.addEventListener("click",()=>b.click()); ch.appendChild(p);});
+      grp.appendChild(row);
+    });
+    idx.appendChild(det);
+  });
+  document.getElementById("lkStats").innerHTML=`<div><strong>${total}</strong><span>إثباتًا موثّقًا</span></div><div><strong>${K.pdf}</strong><span>وثيقة PDF</span></div><div><strong>${K.img}</strong><span>صورة</span></div><div><strong>${(K.vid||0)+(K.aud||0)}</strong><span>مقطعًا مرئيًا وصوتيًا</span></div>`;
+  const dets=[...idx.querySelectorAll("details")], allBtn=document.getElementById("lkAll");
+  allBtn.addEventListener("click",()=>{const open=!dets.every(d=>d.open); dets.forEach(d=>d.open=open); allBtn.textContent=open?"طيّ الكل":"فتح الكل";});
+  document.getElementById("lkQ").addEventListener("input",e=>{
+    const q=e.target.value.trim().toLowerCase(); let any=false;
+    dets.forEach(d=>{let n=0; d.querySelectorAll(".lk-row").forEach(r=>{const m=!q||r.dataset.q.includes(q); r.hidden=!m; if(m)n++;});
+      d.querySelectorAll(".lk-grp").forEach(g=>g.hidden=![...g.querySelectorAll(".lk-row")].some(r=>!r.hidden));
+      d.hidden=n===0; if(q) d.open=n>0; if(n) any=true;});
+    document.getElementById("lkNone").hidden=any;
+  });
+  document.querySelector("#links .lk-key").addEventListener("click",e=>{const c=e.target.closest(".lk-card"); if(!c) return;
+    const g=c.dataset.go;
+    if(g==="prop") document.getElementById("propPdf").click();
+    else if(g==="cv") document.getElementById("cvPdf").click();
+    else if(g==="film") openMeta("الفيلم التعريفي · 3:33 دقيقة","من الخبرة إلى المعرفة… ومن المعرفة إلى الأثر",{k:"video",s:"film.mp4"});
+    else if(g==="abs"){ location.hash="#proposal"; setTimeout(()=>document.getElementById("p-abs").scrollIntoView({behavior:"smooth",block:"start"}),120); }
+  });
+})();
 // pages
 const order=[...document.querySelectorAll("section.file")];
 const navLinks=[...document.querySelectorAll("nav.files a")];
@@ -778,7 +866,6 @@ function route(){
 }
 window.addEventListener("hashchange",route); route(); window.addEventListener("load",()=>{ if(location.hash&&location.hash!=="#home") setTimeout(()=>window.scrollTo({top:0,behavior:"instant"}),60); });
 
-document.addEventListener("keydown",e=>{ if(e.key==="Escape" && !modal.hidden) closeFilm(); });
 </script>
 
 </body>
